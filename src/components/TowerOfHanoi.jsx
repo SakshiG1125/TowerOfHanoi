@@ -3,107 +3,64 @@
 import { useState, useEffect, useRef } from "react"
 import "./TowerOfHanoi.css"
 
-function TowerOfHanoi({ diskCount, speed, isPlaying, isReset }) {
-  const [towers, setTowers] = useState([
-    Array.from({ length: diskCount }, (_, i) => diskCount - i), // Source tower
-    [], // Auxiliary tower
-    [], // Target tower
-  ])
+function TowerOfHanoi({ diskCount, speed, isPlaying }) {
+  const [towers, setTowers] = useState([Array.from({ length: diskCount }, (_, i) => diskCount - i), [], []])
   const [moves, setMoves] = useState([])
   const [currentMoveIndex, setCurrentMoveIndex] = useState(-1)
   const [isComplete, setIsComplete] = useState(false)
-  const [showCompletionModal, setShowCompletionModal] = useState(false)
-  const animationRef = useRef(null)
-  const [activeDisk, setActiveDisk] = useState(null)
+  const [showModal, setShowModal] = useState(false)
+  const timeoutRef = useRef(null)
 
-  // Generate moves for Tower of Hanoi
+  // Generate moves
   useEffect(() => {
     const generatedMoves = []
 
     function generateMoves(n, source, auxiliary, target) {
       if (n === 0) return
-
-      // Move n-1 disks from source to auxiliary
       generateMoves(n - 1, source, target, auxiliary)
-
-      // Move the nth disk from source to target
       generatedMoves.push({ from: source, to: target, disk: n })
-
-      // Move n-1 disks from auxiliary to target
       generateMoves(n - 1, auxiliary, source, target)
     }
 
-    // Start with disk numbers 1 to diskCount (smallest to largest)
     generateMoves(diskCount, 0, 1, 2)
     setMoves(generatedMoves)
     setCurrentMoveIndex(-1)
     setIsComplete(false)
-    setShowCompletionModal(false)
+    setShowModal(false)
+    setTowers([Array.from({ length: diskCount }, (_, i) => diskCount - i), [], []])
   }, [diskCount])
-
-  // Reset the towers when disk count changes or reset is triggered
-  useEffect(() => {
-    if (isReset) {
-      setTowers([Array.from({ length: diskCount }, (_, i) => diskCount - i), [], []])
-      setCurrentMoveIndex(-1)
-      setIsComplete(false)
-      setShowCompletionModal(false)
-    }
-  }, [diskCount, isReset])
 
   // Handle animation
   useEffect(() => {
     if (isPlaying && currentMoveIndex < moves.length - 1 && !isComplete) {
-      animationRef.current = setTimeout(() => {
-        const nextMoveIndex = currentMoveIndex + 1
-        const { from: moveFrom, to: moveTo, disk } = moves[nextMoveIndex]
-        setActiveDisk(disk)
+      timeoutRef.current = setTimeout(() => {
+        const nextIndex = currentMoveIndex + 1
+        const move = moves[nextIndex]
 
         setTowers((prevTowers) => {
-          // Create deep copy of towers
           const newTowers = prevTowers.map((tower) => [...tower])
-
-          // Only move the top disk
-          if (newTowers[moveFrom].length > 0) {
-            const disk = newTowers[moveFrom].pop()
-
-            // Check if this move is valid (smaller disk on larger disk or empty peg)
-            const isValidMove = newTowers[moveTo].length === 0 || disk < newTowers[moveTo][newTowers[moveTo].length - 1]
-
-            if (isValidMove) {
-              newTowers[moveTo].push(disk)
-            } else {
-              // If invalid, put the disk back
-              newTowers[moveFrom].push(disk)
-              console.error("Invalid move attempted:", { disk, from: moveFrom, to: moveTo, towers: newTowers })
-            }
+          if (newTowers[move.from].length > 0) {
+            const disk = newTowers[move.from].pop()
+            newTowers[move.to].push(disk)
           }
-
           return newTowers
         })
 
-        setCurrentMoveIndex(nextMoveIndex)
+        setCurrentMoveIndex(nextIndex)
 
-        if (nextMoveIndex === moves.length - 1) {
+        if (nextIndex === moves.length - 1) {
           setIsComplete(true)
-          // Show completion modal after a short delay
-          setTimeout(() => {
-            setShowCompletionModal(true)
-          }, 1000)
+          setTimeout(() => setShowModal(true), 500)
         }
       }, speed)
     }
 
     return () => {
-      if (animationRef.current) {
-        clearTimeout(animationRef.current)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
       }
     }
   }, [isPlaying, currentMoveIndex, moves, speed, isComplete])
-
-  const closeCompletionModal = () => {
-    setShowCompletionModal(false)
-  }
 
   return (
     <div className="tower-of-hanoi">
@@ -117,7 +74,7 @@ function TowerOfHanoi({ diskCount, speed, isPlaying, isReset }) {
               {tower.map((diskSize, diskIndex) => (
                 <div
                   key={`${towerIndex}-${diskIndex}-${diskSize}`}
-                  className={`disk ${activeDisk === diskSize ? "active" : ""}`}
+                  className="disk"
                   style={{
                     width: `${(diskSize / diskCount) * 80 + 20}%`,
                     backgroundColor: `hsl(${diskSize * 30}, 70%, 50%)`,
@@ -142,14 +99,14 @@ function TowerOfHanoi({ diskCount, speed, isPlaying, isReset }) {
         )}
       </div>
 
-      {showCompletionModal && (
-        <div className="completion-modal-overlay">
-          <div className="completion-modal">
+      {showModal && (
+        <div className="completion-modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="completion-modal" onClick={(e) => e.stopPropagation()}>
             <h2>Congratulations!</h2>
-            <p>You've successfully solved the Tower of Hanoi puzzle with {diskCount} disks.</p>
+            <p>You solved the Tower of Hanoi puzzle with {diskCount} disks!</p>
             <p>Total moves: {moves.length}</p>
-            <p>Minimum possible moves: {Math.pow(2, diskCount) - 1}</p>
-            <button onClick={closeCompletionModal}>Close</button>
+            <p>Minimum possible: {Math.pow(2, diskCount) - 1}</p>
+            <button onClick={() => setShowModal(false)}>Close</button>
           </div>
         </div>
       )}

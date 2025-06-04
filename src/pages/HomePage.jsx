@@ -17,8 +17,7 @@ function HomePage() {
         <p>
           The Tower of Hanoi is a mathematical puzzle that was invented by the French mathematician Édouard Lucas in
           1883. It is associated with a legend of a temple in Hanoi, Vietnam, where monks were given the task of moving
-          64 golden disks from one peg to another, following specific rules. According to the legend, once they complete
-          the task, the world will end.
+          64 golden disks from one peg to another, following specific rules.
         </p>
 
         <h2>Mathematical Background</h2>
@@ -29,22 +28,11 @@ function HomePage() {
             solved using recursion.
           </li>
           <li>
-            <strong>Binary Numbers:</strong> The states of the puzzle can be represented using binary numbers, with each
-            bit representing the position of a disk.
+            <strong>Binary Numbers:</strong> The states of the puzzle can be represented using binary numbers.
           </li>
           <li>
-            <strong>Exponential Complexity:</strong> The minimum number of moves required to solve the puzzle with n
-            disks is 2<sup>n</sup> - 1.
+            <strong>Exponential Complexity:</strong> The minimum number of moves required is 2<sup>n</sup> - 1.
           </li>
-        </ul>
-
-        <h2>Significance</h2>
-        <p>The Tower of Hanoi puzzle is significant in computer science and mathematics for several reasons:</p>
-        <ul>
-          <li>It serves as an excellent introduction to recursive algorithms.</li>
-          <li>It demonstrates how complex problems can be broken down into simpler sub-problems.</li>
-          <li>It illustrates the concept of exponential growth in algorithm complexity.</li>
-          <li>It's used in cognitive psychology to study problem-solving abilities.</li>
         </ul>
 
         <div className="action-links">

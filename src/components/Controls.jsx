@@ -1,4 +1,5 @@
 "use client"
+
 import "./Controls.css"
 
 function Controls({ diskCount, speed, isPlaying, onDiskCountChange, onSpeedChange, onPlayPause, onReset }) {
@@ -8,13 +9,11 @@ function Controls({ diskCount, speed, isPlaying, onDiskCountChange, onSpeedChang
   }
 
   const handleSpeedChange = (e) => {
-    // Convert slider value (1-10) to speed in milliseconds (1000-100)
     const sliderValue = Number.parseInt(e.target.value, 10)
     const speedValue = 1100 - sliderValue * 100
     onSpeedChange(speedValue)
   }
 
-  // Convert speed in milliseconds (1000-100) to slider value (1-10)
   const sliderValue = Math.round((1100 - speed) / 100)
 
   return (
@@ -49,7 +48,6 @@ function Controls({ diskCount, speed, isPlaying, onDiskCountChange, onSpeedChang
         <button className={`play-pause-button ${isPlaying ? "pause" : "play"}`} onClick={onPlayPause}>
           {isPlaying ? "Pause" : "Play"}
         </button>
-
         <button className="reset-button" onClick={onReset}>
           Reset
         </button>
