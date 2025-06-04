@@ -1,0 +1,153 @@
+.algorithm-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.algorithm-page h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+}
+
+.algorithm-explanation,
+.step-by-step {
+  background-color: var(--surface-color);
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.algorithm-explanation h2,
+.step-by-step h2 {
+  color: var(--secondary-color);
+  margin-bottom: 20px;
+}
+
+.algorithm-explanation h3 {
+  color: var(--primary-color);
+  margin: 20px 0 10px;
+}
+
+.code-block {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.code-block pre {
+  margin: 0;
+  font-family: "Fira Code", monospace;
+  font-size: 0.9rem;
+}
+
+.code-block code {
+  color: #e6e6e6;
+}
+
+ol,
+ul {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+li {
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+}
+
+.visualization {
+  margin: 30px 0;
+}
+
+.pegs-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.peg-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.peg-label {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.peg {
+  position: relative;
+  width: 20px;
+  height: 150px;
+  background-color: #555;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.peg::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: -40px;
+  width: 100px;
+  height: 10px;
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.disks-stack {
+  position: absolute;
+  bottom: 0px; /* Changed from -10px to 0px to position above the base */
+  left: -40px;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.disk {
+  position: absolute;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--bg-color);
+  font-weight: bold;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.step-description {
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.step-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.step-controls button {
+  padding: 8px 16px;
+}
+
+.step-explanation {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.step-explanation h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
